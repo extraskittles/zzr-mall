@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width,height=device-height,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>zzr笔记</title>
+</head>
+<link type="text/css" rel="stylesheet" href="/css/blog.css">
+<body>
+<div id="app"></div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/axios/0.17.1/axios.min.js"></script>
+<script type="text/x-template" id="template">
+    <div id="note">
+        <div id="document">
+            <div id="document_top">
+                博客文章列表
+            </div>
+            <div id="document_list">
+                <div id="document_list_element" v-for="document in documentList" v-on:click="selectDoc(document)"
+                     :class="{active:isActive(document)}">
+                    {{document.title}}
+                </div>
+            </div>
+        </div>
+        <div id="editor">
+            <div id="editor_top">
+                <div id="title" >{{selectedDoc.title}}</div>
+            </div>
+            <div id="editor_text" v-html="selectedDoc.html">
+
+            </div>
+        </div>
+    </div>
+
+</script>
+<script>
+    let app = new Vue({
+        el: '#app',
+        template: "#template",
+        data: function () {
+            return {
+                documentList:[],
+                selectedDoc:{html: ''},
+            };
+        },
+        methods: {
+            isActive:function(document){
+                if( document.id==this.selectedDoc.id){
+                    return true;
+                }else {
+                    return false;
+                }
+            },
+            //查询单个文档,并赋值到editor_text
+            selectDoc:function (document) {
+                axios({
+                    method:"get",
+                    url: "/selectDocument",
+                    params:{
+                        documentId:document.id
+                    }
+                }).then((response)=>{
+                    if(response.data.code==200){
+                        this.selectedDoc=response.data.data;
+                    }
+                })
+               // document.getElementById("editor_text").innerHTML=this.selectedDoc.html
+            },
+            //查询文档列表
+            selectDocs:function () {
+                axios.get("/selectDocuments").then((response)=>{
+                    if(response.data.code==200){
+                        this.documentList=response.data.data;
+                    }
+                })
+            },
+            isSelected:function (document) {
+                if(document.id=this.selectedDoc.id){
+                    return true;
+                }
+            }
+        },
+
+        beforecreated: function () {
+
+        },
+        created: function () {
+            this.selectDocs();
+        },
+        mounted: function () {
+        },
+        computed:{
+
+        }
+    })
+</script>
+</html>

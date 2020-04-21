@@ -1,0 +1,49 @@
+#note{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+#document{
+    display: flex;
+    flex-direction: column;
+    width: 13%;
+}
+#document_top{
+    height: 4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    text-align: center;
+    width: 100%;
+    border: solid cadetblue;
+}
+#document_list{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+#document_list_element{
+    text-align: center;
+    padding: 1rem;
+    border: solid #e8e2e2 0.01rem;
+}
+#editor_top{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+#editor{
+    width: 85%;
+}
+#title{
+    width: 90%;
+    height: 2rem;
+    font-size: 1.3rem;
+    text-align: center;
+}
+.active{
+    background-color: gainsboro;
+}
+#editor_text{
+
+}

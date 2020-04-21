@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzr.mall.dao.OrderDetailDao">
+
+
+  <resultMap id="detailMap" type="com.zzr.mall.dto.OrderDetail" extends="com.zzr.mall.mapper.OrderMapper.BaseResultMap">
+    <association property="product"  column="pid"
+                 select="com.zzr.mall.mapper.ProductMapper.selectByPrimaryKey" >
+    </association>
+    <association property="user"  column="uid"
+                 select="com.zzr.mall.mapper.UserMapper.selectByPrimaryKey" >
+    </association>
+    <collection property="orderItems" column="oid" select="com.zzr.mall.mapper.OrderItemMapper.selectByPrimaryKey">
+    </collection>
+  </resultMap>
+  <select id="selectDetail" parameterType="java.lang.Integer" resultMap="detailMap">
+    select * from order;
+  </select>
+</mapper>
