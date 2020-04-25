@@ -61,4 +61,10 @@ public class ProductServiceImpl implements ProductService {
         String url = FileUtil.saveWindowPicture(file, FileUtil.WINDOWDIR);
         return url;
     }
+
+    @Override
+    public Product selectOne(int id) {
+        Product product = productMapper.selectByPrimaryKey(id);
+        return product;
+    }
 }

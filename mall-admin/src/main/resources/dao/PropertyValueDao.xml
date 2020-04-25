@@ -12,4 +12,18 @@
     property p ON pv.ptid= p.id
      where pid=#{productId}
   </select>
+    <update id="updatePropertyValues" >
+        update property_value
+        set
+        value=case id
+        <foreach collection="list" item="item">
+            when #{item.id} then #{item.value}
+        </foreach>
+        end
+        where
+        id in
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item.id}
+        </foreach>
+    </update>
 </mapper>

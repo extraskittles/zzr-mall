@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width,height=device-height,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>编辑商品</title>
+</head>
+<link type="text/css" rel="stylesheet" href="/css/admin_category.css">
+<body>
+<div id="app"></div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/axios/0.17.1/axios.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script type="text/x-template" id="template">
+    <div id="note">
+        <div id="head"></div>
+        <div id="content">
+            <div class="form">
+                <div class="form-title">编辑产品</div>
+                <div class="inputs">
+                    <div>
+                        <span>产品名称</span>
+                        <input type="text" v-model="product.name">
+                    </div>
+                    <div>
+                        <span>产品小标题</span>
+                        <input type="text" v-model="product.subTitle">
+                    </div>
+                    <div>
+                        <span>原价格</span>
+                        <input type="text" v-model="product.originalPrice">
+                    </div>
+                    <div>
+                        <span>优惠价格</span>
+                        <input type="text" v-model="product.promotePrice">
+                    </div>
+                    <div>
+                        <span>库存</span>
+                        <input type="text" v-model="product.stock">
+                    </div>
+                </div>
+                <button id="submit" class="submit" v-on:click="updateProduct">更改</button>
+            </div>
+        </div>
+    </div>
+</script>
+<script>
+    $(function () {
+        $("#head").load("head.html");
+    });
+</script>
+<script>
+    let app = new Vue({
+            el: '#app',
+            template: "#template",
+            data: function () {
+                return {
+                    id:'',
+                    product:{},
+                }
+            },
+            methods: {
+                handleCurrentChange() {
+                    this.selectProducts();
+                },
+                categoryEdit(row){
+                    window.location="/admin_category_edit.html?id="+row.id;
+                },
+                propertyEdit(row){
+                    window.location="/admin_property.html?cid="+row.id;
+                },
+                productEdit(row){
+
+                },
+
+                //查询单个商品
+                selectProduct: function () {
+                    axios({
+                        method: "get",
+                        url: "selectProduct",
+                        params: {
+                            id:this.id,
+                        }
+                    }).then((response) => {
+                        if (response.data.code == 200) {
+                            this.product= response.data.data;
+                        }
+                    })
+                },
+                updateProduct:function () {
+                    axios({
+                        method: "post",
+                        url: "updateProduct",
+                        data:this.product
+                    }).then((response) => {
+                        if (response.data.code == 200) {
+                            alert("更新成功")
+                            window.location="/admin_product.html?cid="+this.product.cid;
+                        }
+                    })
+                },
+            },
+        beforecreated: function () {
+    },
+    created: function () {
+        let query = window.location.search.substring(1);
+        let arr = query.split("=");
+        let id=arr[arr.length-1];
+        this.id=id;
+        this.selectProduct();
+    },
+    mounted: function () {
+    },
+    computed: {}
+    })
+</script>
+</html>

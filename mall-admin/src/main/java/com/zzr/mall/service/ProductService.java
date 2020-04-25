@@ -13,4 +13,5 @@ public interface ProductService {
     int update(ProductUpdateParam param);
     int delete(int productId);
     String upload(MultipartFile file);
+    Product selectOne(int id);
 }

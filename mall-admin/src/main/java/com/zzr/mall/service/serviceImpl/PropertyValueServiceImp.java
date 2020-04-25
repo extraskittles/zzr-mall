@@ -43,4 +43,10 @@ PropertyValueMapper propertyValueMapper;
         int i = propertyValueMapper.updateByPrimaryKeySelective(propertyValue);
         return i;
     }
+
+    @Override
+    public int updateMany(List<PropertyValueUpdateParam> params) {
+        int i = propertyValueDao.updatePropertyValues(params);
+        return i;
+    }
 }

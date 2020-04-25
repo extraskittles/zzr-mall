@@ -10,4 +10,5 @@ public interface PropertyValueService {
     int delete(int id);
     int insert(PropertyValue propertyValue);
     int update(PropertyValueUpdateParam param);
+    int updateMany(List<PropertyValueUpdateParam> params);
 }

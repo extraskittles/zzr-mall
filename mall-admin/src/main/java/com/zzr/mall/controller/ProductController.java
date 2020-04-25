@@ -32,6 +32,15 @@ public class ProductController {
             return CommonResult.failed();
         }
     }
+    @GetMapping("/selectProduct")
+    public CommonResult selectProduct(@RequestParam(required = true)int id){
+        Product product= productService.selectOne(id);
+        if(product!=null){
+            return CommonResult.success(product);
+        }else {
+            return CommonResult.failed();
+        }
+    }
     @PostMapping("/addProduct")
     public CommonResult addProduct(@RequestBody @Validated ProductAddParam param){
         int i = productService.insert(param);

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width,height=device-height,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>分类管理</title>
+    <title>商品管理</title>
 </head>
 <link type="text/css" rel="stylesheet" href="/css/admin_category.css">
 <body>
@@ -22,64 +22,65 @@
             <div id="table">
                 <el-table
                         border
-                        :data="categories"
+                        :data="products"
                         style="width: 100%">
                     <el-table-column
                             prop="id"
-                            label="商品分类id"
+                            label="ID"
                             width="180">
                     </el-table-column>
                     <el-table-column
                             prop="name"
-                            label="分类名称"
+                            label="产品名称"
                             width="180">
                     </el-table-column>
-                    <el-table-column label="分类的属性管理">
+                    <el-table-column
+                            prop="subTitle"
+                            label="产品小标题"
+                            width="180">
+                    </el-table-column>
+                    <el-table-column
+                            prop="originalPrice"
+                            label="原价格"
+                            width="180">
+                    </el-table-column>
+                    <el-table-column
+                            prop="promotePrice"
+                            label="优惠价格"
+                            width="180">
+                    </el-table-column>
+                    <el-table-column
+                            prop="stock"
+                            label="库存数量"
+                            width="180">
+                    </el-table-column>
+                    <el-table-column label="设置属性">
                         <template slot-scope="scope">
                             <el-button
                                     size="mini"
-                                    @click="propertyEdit(scope.row)">修改分类的属性
+                                    @click="propertyEdit(scope.row)">设置
                             </el-button>
                         </template>
                     </el-table-column>
-                    <el-table-column label="产品管理">
+                    <el-table-column label="编辑">
                         <template slot-scope="scope">
                             <el-button
                                     size="mini"
-                                    @click="productEdit(scope.row)">修改商品
+                                    @click="productEdit(scope.row)">编辑
                             </el-button>
                         </template>
                     </el-table-column>
 
-                    <el-table-column label="操作">
+                    <el-table-column label="删除">
                         <template slot-scope="scope">
                             <el-button
                                     size="mini"
-                                    @click="categoryEdit(scope.row)">修改分类
-                            </el-button>
-                            <el-button
-                                    size="mini"
                                     type="danger"
-                                    @click="deleteCategory(scope.row)">删除分类
+                                    @click="deleteProduct(scope.row)">删除
                             </el-button>
                         </template>
                     </el-table-column>
                 </el-table>
-            </div>
-
-            <div class="form">
-                <div class="form-title">新增分类</div>
-                <div class="inputs">
-                    <div>
-                        <span>分类名称</span>
-                        <input type="text" v-model="category.name">
-                    </div>
-                    <div>
-                        <span>分类图片</span>
-                        <input type="file" accept="image/*" ref="file" @change="setBase64">
-                    </div>
-                </div>
-                <button id="submit" class="submit" v-on:click="addCategory">提交</button>
             </div>
 
             <div id="page">
@@ -90,6 +91,33 @@
                         layout="total, prev, pager, next"
                         :total.sync="total">
                 </el-pagination>
+            </div>
+
+            <div class="form">
+                <div class="form-title">新增产品</div>
+                <div class="inputs">
+                    <div>
+                        <span>产品名称</span>
+                        <input type="text" v-model="product.name">
+                    </div>
+                    <div>
+                        <span>产品小标题</span>
+                        <input type="text" v-model="product.subTitle">
+                    </div>
+                    <div>
+                        <span>原价格</span>
+                        <input type="text" v-model="product.originalPrice">
+                    </div>
+                    <div>
+                        <span>优惠价格</span>
+                        <input type="text" v-model="product.promotePrice">
+                    </div>
+                    <div>
+                        <span>库存</span>
+                        <input type="text" v-model="product.stock">
+                    </div>
+                </div>
+                <button id="submit" class="submit" v-on:click="addProduct">提交</button>
             </div>
         </div>
     </div>
@@ -108,16 +136,14 @@
                 currentPage: 1,
                 pageSize: 5,
                 total: 1,
-                categories: [],
-                category: {
-                    name: '',
-                    pic: '',//新增分类
-                },
+                cid:'',
+                products:[],
+                product:{},
             }
         },
         methods: {
             handleCurrentChange() {
-                this.selectCategories();
+                this.selectProducts();
             },
             categoryEdit(row){
                 window.location="/admin_category_edit.html?id="+row.id;
@@ -126,80 +152,62 @@
                 window.location="/admin_property.html?cid="+row.id;
             },
             productEdit(row){
-                window.location="/admin_product.html?cid="+row.id;
+
             },
 
             //查询多个分类
-            selectCategories: function () {
+            selectProducts: function () {
                 axios({
                     method: "get",
-                    url: "/selectCategories",
+                    url: "/selectProducts",
                     params: {
                         pageNum: this.currentPage,
                         pageSize: this.pageSize,
+                        categoryId:this.cid,
                     }
                 }).then((response) => {
                     if (response.data.code == 200) {
-                        this.categories = response.data.data.list;
+                        this.products = response.data.data.list;
                         this.total = response.data.data.total;
                     }
                 })
             },
             //增加分类
-            addCategory: function () {
+            addProduct: function () {
+                this.product.cid=this.cid;
                 axios({
                     method: "post",
-                    url: "/addCategory",
-                    data: this.category,
+                    url: "/addProduct",
+                    data: this.product,
                     headers: {
                         "Content-Type": "application/json"
                     }
                 }).then((response) => {
                     if (response.data.code == 200) {
-                        this.selectCategories();
-                        this.category.name = '';
-                        this.category.pic = '';
+                        this.selectProducts();
+                        this.product={}
                         alert("添加成功")
                     }
                 })
             },
-            //照片转化为base64
-            setBase64: function () {
-                let data = this.$refs.file.files[0];
-                let imgFile = new FileReader();
-                imgFile.readAsDataURL(data);
-                imgFile.onload = res => {
-                    this.category.pic = res.target.result;
-                };
-            },
             //删除category
-            deleteCategory: function (index, row) {
+            deleteProduct: function (row) {
                 let id = row.id;
                 axios({
                     method: "post",
-                    url: "/deleteCategory",
+                    url: "/deleteProduct",
                     data: id,
                     headers: {
                         "Content-Type": "application/json"
                     }
                 }).then((response) => {
                     if (response.data.code == 200) {
-                        this.selectCategories();
+                        this.selectProducts();
                         alert("删除成功")
                     }
                 })
             },
-            //查询单个分类信息
-            /*selectCategory:function (row) {
-                axios.get({
-                    url:"/selectCategory",
-                    params:row.id,
-                }).then((response)=>{
-                    if(response.data.code==200){
-                        this.selectedCategory=response.data.data;
-                    }
-                })
-            },*/
+
 
         },
 
@@ -207,7 +215,11 @@
 
         },
         created: function () {
-            this.selectCategories();
+            let query = window.location.search.substring(1);
+            let arr = query.split("=");
+            let cid=arr[arr.length-1];
+            this.cid=cid;
+            this.selectProducts();
         },
         mounted: function () {
         },

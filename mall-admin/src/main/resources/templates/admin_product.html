@@ -22,11 +22,11 @@
             <div id="table">
                 <el-table
                         border
-                        :data=""
+                        :data="products"
                         style="width: 100%">
                     <el-table-column
                             prop="id"
-                            label="ID"
+                            label="商品ID"
                             width="180">
                     </el-table-column>
                     <el-table-column
@@ -54,29 +54,29 @@
                             label="库存数量"
                             width="180">
                     </el-table-column>
-                    <el-table-column label="设置属性">
+                    <el-table-column label="更改商品">
                         <template slot-scope="scope">
                             <el-button
                                     size="mini"
-                                    @click="propertyEdit(scope.row)">设置
+                                    @click="productEdit(scope.row)">更改
                             </el-button>
                         </template>
                     </el-table-column>
-                    <el-table-column label="编辑">
+                    <el-table-column label="更改商品属性值">
                         <template slot-scope="scope">
                             <el-button
                                     size="mini"
-                                    @click="productEdit(scope.row)">编辑
+                                    @click="productEditPV(scope.row)">更改
                             </el-button>
                         </template>
                     </el-table-column>
 
-                    <el-table-column label="删除">
+                    <el-table-column label="删除商品">
                         <template slot-scope="scope">
                             <el-button
                                     size="mini"
                                     type="danger"
-                                    @click="deleteCategory(scope.row)">删除
+                                    @click="deleteProduct(scope.row)">删除
                             </el-button>
                         </template>
                     </el-table-column>
@@ -98,29 +98,27 @@
                 <div class="inputs">
                     <div>
                         <span>产品名称</span>
-                        <input type="text" v-model="">
+                        <input type="text" v-model="product.name">
                     </div>
                     <div>
                         <span>产品小标题</span>
-                        <input type="text" v-model="">
+                        <input type="text" v-model="product.subTitle">
                     </div>
                     <div>
                         <span>原价格</span>
-                        <input type="text" v-model="">
+                        <input type="text" v-model="product.originalPrice">
                     </div>
                     <div>
                         <span>优惠价格</span>
-                        <input type="text" v-model="">
+                        <input type="text" v-model="product.promotePrice">
                     </div>
                     <div>
                         <span>库存</span>
-                        <input type="text" v-model="">
+                        <input type="text" v-model="product.stock">
                     </div>
                 </div>
-                <button id="submit" class="submit" v-on:click="">提交</button>
+                <button id="submit" class="submit" v-on:click="addProduct">提交</button>
             </div>
-
-
         </div>
     </div>
 </script>
@@ -138,53 +136,53 @@
                 currentPage: 1,
                 pageSize: 5,
                 total: 1,
-               
+                cid:'',
+                products:[],
+                product:{},
             }
         },
         methods: {
             handleCurrentChange() {
-                this.selectCategories();
-            },
-            categoryEdit(row){
-                window.location="/admin_category_edit.html?id="+row.id;
-            },
-            propertyEdit(row){
-                window.location="/admin_property.html?cid="+row.id;
+                this.selectProducts();
             },
             productEdit(row){
-
+                window.location="/admin_product_edit.html?id="+row.id;
+            },
+            productEditPV(row){
+                window.location="/admin_product_editPV.html?pid="+row.id;
             },
 
             //查询多个分类
-            selectCategories: function () {
+            selectProducts: function () {
                 axios({
                     method: "get",
-                    url: "/selectCategories",
+                    url: "/selectProducts",
                     params: {
                         pageNum: this.currentPage,
                         pageSize: this.pageSize,
+                        categoryId:this.cid,
                     }
                 }).then((response) => {
                     if (response.data.code == 200) {
-                        this.categories = response.data.data.list;
+                        this.products = response.data.data.list;
                         this.total = response.data.data.total;
                     }
                 })
             },
             //增加分类
-            addCategory: function () {
+            addProduct: function () {
+                this.product.cid=this.cid;
                 axios({
                     method: "post",
-                    url: "/addCategory",
-                    data: this.category,
+                    url: "/addProduct",
+                    data: this.product,
                     headers: {
                         "Content-Type": "application/json"
                     }
                 }).then((response) => {
                     if (response.data.code == 200) {
-                        this.selectCategories();
-                        this.category.name = '';
-                        this.category.pic = '';
+                        this.selectProducts();
+                        this.product={}
                         alert("添加成功")
                     }
                 })
@@ -199,18 +197,18 @@
                 };
             },
             //删除category
-            deleteCategory: function (index, row) {
+            deleteProduct: function (row) {
                 let id = row.id;
                 axios({
                     method: "post",
-                    url: "/deleteCategory",
+                    url: "/deleteProduct",
                     data: id,
                     headers: {
                         "Content-Type": "application/json"
                     }
                 }).then((response) => {
                     if (response.data.code == 200) {
-                        this.selectCategories();
+                        this.selectProducts();
                         alert("删除成功")
                     }
                 })
@@ -223,7 +221,11 @@
 
         },
         created: function () {
-
+            let query = window.location.search.substring(1);
+            let arr = query.split("=");
+            let cid=arr[arr.length-1];
+            this.cid=cid;
+            this.selectProducts();
         },
         mounted: function () {
         },

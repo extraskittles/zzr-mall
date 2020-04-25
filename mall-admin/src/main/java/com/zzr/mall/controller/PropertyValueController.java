@@ -38,4 +38,14 @@ public class PropertyValueController {
             return CommonResult.failed();
         }
     }
+
+    @PostMapping("/updateProValues")
+    public CommonResult updateProValues(@RequestBody @Validated List<PropertyValueUpdateParam> params){
+        int i = propertyValueService.updateMany(params);
+        if (i>0) {
+            return CommonResult.success();
+        } else {
+            return CommonResult.failed();
+        }
+    }
 }
