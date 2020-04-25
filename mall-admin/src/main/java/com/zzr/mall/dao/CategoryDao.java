@@ -8,4 +8,5 @@ import java.util.List;
 public interface CategoryDao {
 
     List<Category> selectAll();
+    Category selectById(int id);
 }

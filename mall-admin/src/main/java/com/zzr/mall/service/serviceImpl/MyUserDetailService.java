@@ -2,8 +2,6 @@ package com.zzr.mall.service.serviceImpl;
 
 
 
-import com.zzr.mall.mapper.UserMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

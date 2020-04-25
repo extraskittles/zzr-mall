@@ -2,9 +2,11 @@ package com.zzr.mall.service.serviceImpl;
 
 
 import com.zzr.mall.dao.PropertyValueDao;
+import com.zzr.mall.dto.PropertyValueUpdateParam;
 import com.zzr.mall.mapper.PropertyValueMapper;
 import com.zzr.mall.model.PropertyValue;
 import com.zzr.mall.service.PropertyValueService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +37,9 @@ PropertyValueMapper propertyValueMapper;
     }
 
     @Override
-    public int update(PropertyValue propertyValue) {
+    public int update(PropertyValueUpdateParam param) {
+        PropertyValue propertyValue = new PropertyValue();
+        BeanUtils.copyProperties(param,propertyValue);
         int i = propertyValueMapper.updateByPrimaryKeySelective(propertyValue);
         return i;
     }

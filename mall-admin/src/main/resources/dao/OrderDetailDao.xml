@@ -1,19 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zzr.mall.dao.OrderDetailDao">
+  <!--  type="com.zzr.mall.dto.OrderDetail"-->
 
+    <resultMap id="detailMap"  type="com.zzr.mall.dto.OrderDetail"
+               extends="com.zzr.mall.mapper.OrderMapper.BaseResultMap">
+        <association property="user" resultMap="com.zzr.mall.mapper.UserMapper.BaseResultMap" columnPrefix="user_">
+        </association>
+        <collection property="OrderItemDetails"  ofType="com.zzr.mall.dto.OrderItemDetail" >
+            <result property="number" column="number"></result>
+            <association property="product" resultMap="com.zzr.mall.mapper.ProductMapper.BaseResultMap" columnPrefix="p_"></association>
+        </collection>
+    </resultMap>
+    <select id="selectDetail" parameterType="java.lang.Integer" resultMap="detailMap">
+        select o.*,
+        oi.number,
+        u.name user_name,
+        p.id p_id,
+        p.name p_name,
+        p.sub_title p_sub_title,
+        p.original_price p_original_price,
+        p.promote_price p_promote_price,
+        p.stock p_stock,
+        p.cid p_cid,
+        p.create_date p_create_date
+        FROM
+        order_ o
+        LEFT JOIN order_item oi ON o.id=oi.oid
+        LEFT JOIN user u ON oi.uid=u.id
+        LEFT JOIN product p ON p.id=oi.pid
+        WHERE o.id=#{id}
+  </select>
 
-  <resultMap id="detailMap" type="com.zzr.mall.dto.OrderDetail" extends="com.zzr.mall.mapper.OrderMapper.BaseResultMap">
-    <association property="product"  column="pid"
-                 select="com.zzr.mall.mapper.ProductMapper.selectByPrimaryKey" >
-    </association>
-    <association property="user"  column="uid"
-                 select="com.zzr.mall.mapper.UserMapper.selectByPrimaryKey" >
-    </association>
-    <collection property="orderItems" column="oid" select="com.zzr.mall.mapper.OrderItemMapper.selectByPrimaryKey">
-    </collection>
-  </resultMap>
-  <select id="selectDetail" parameterType="java.lang.Integer" resultMap="detailMap">
-    select * from order;
+    <select id="selectDetails" parameterType="java.lang.Integer" resultMap="detailMap">
+        select o.*,
+        oi.number,
+        u.name user_name,
+        p.id p_id,
+        p.name p_name,
+        p.sub_title p_sub_title,
+        p.original_price p_original_price,
+        p.promote_price p_promote_price,
+        p.stock p_stock,
+        p.cid p_cid,
+        p.create_date p_create_date
+        FROM
+        order_ o
+        LEFT JOIN order_item oi ON o.id=oi.oid
+        LEFT JOIN user u ON oi.uid=u.id
+        LEFT JOIN product p ON p.id=oi.pid
   </select>
 </mapper>

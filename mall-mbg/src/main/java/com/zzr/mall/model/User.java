@@ -9,17 +9,6 @@ public class User {
 
     private String salt;
 
-    public User(Integer id, String name, String password, String salt) {
-        this.id = id;
-        this.name = name;
-        this.password = password;
-        this.salt = salt;
-    }
-
-    public User() {
-        super();
-    }
-
     public Integer getId() {
         return id;
     }

@@ -7,16 +7,6 @@ public class ProductImage {
 
     private String type;
 
-    public ProductImage(Integer id, Integer pid, String type) {
-        this.id = id;
-        this.pid = pid;
-        this.type = type;
-    }
-
-    public ProductImage() {
-        super();
-    }
-
     public Integer getId() {
         return id;
     }

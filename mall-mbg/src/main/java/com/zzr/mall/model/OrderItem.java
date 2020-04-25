@@ -11,18 +11,6 @@ public class OrderItem {
 
     private Integer number;
 
-    public OrderItem(Integer id, Integer pid, Integer oid, Integer uid, Integer number) {
-        this.id = id;
-        this.pid = pid;
-        this.oid = oid;
-        this.uid = uid;
-        this.number = number;
-    }
-
-    public OrderItem() {
-        super();
-    }
-
     public Integer getId() {
         return id;
     }

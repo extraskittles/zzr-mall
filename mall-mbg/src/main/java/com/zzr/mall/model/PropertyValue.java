@@ -9,17 +9,6 @@ public class PropertyValue {
 
     private String value;
 
-    public PropertyValue(Integer id, Integer pid, Integer ptid, String value) {
-        this.id = id;
-        this.pid = pid;
-        this.ptid = ptid;
-        this.value = value;
-    }
-
-    public PropertyValue() {
-        super();
-    }
-
     public Integer getId() {
         return id;
     }

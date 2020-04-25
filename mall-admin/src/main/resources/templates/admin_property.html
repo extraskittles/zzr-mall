@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width,height=device-height,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>属性管理</title>
+</head>
+<link type="text/css" rel="stylesheet" href="/css/admin_category.css">
+<body>
+<div id="app"></div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/axios/0.17.1/axios.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script type="text/x-template" id="template">
+    <div id="note">
+        <div id="head"></div>
+        <div id="content">
+            <div id="table">
+                <el-table
+                        border
+                        :data="properties"
+                        style="width: 100%">
+                    <el-table-column
+                            prop="id"
+                            label="ID"
+                            width="180">
+                    </el-table-column>
+                    <el-table-column
+                            prop="name"
+                            label="属性名称"
+                            width="180">
+                    </el-table-column>
+                    <el-table-column label="编辑">
+                        <template slot-scope="scope">
+                            <el-button
+                                    size="mini"
+                                    @click="handleEdit(scope.row)">编辑
+                            </el-button>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="删除">
+                        <template slot-scope="scope">
+                            <el-button
+                                    size="mini"
+                                    type="danger"
+                                    @click="deleteProperty(scope.row)">删除
+                            </el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </div>
+
+            <div class="form">
+                <div class="form-title">新增属性</div>
+                <div class="inputs">
+                    <div>
+                        <span>属性名称</span>
+                        <input type="text" v-model="property.name">
+                    </div>
+                </div>
+                <button id="submit" class="submit" v-on:click="addProperty">提交</button>
+            </div>
+
+            <div id="page">
+                <el-pagination
+                        @current-change="handleCurrentChange"
+                        :current-page.sync="currentPage"
+                        :page-size.sync="pageSize"
+                        layout="total, prev, pager, next"
+                        :total.sync="total">
+                </el-pagination>
+            </div>
+        </div>
+    </div>
+</script>
+<script>
+    $(function () {
+        $("#head").load("head.html");
+    });
+</script>
+<script>
+    let app = new Vue({
+        el: '#app',
+        template: "#template",
+        data: function () {
+            return {
+                currentPage: 1,
+                pageSize: 5,
+                total:5,
+                properties:[],
+                property:{
+                    cid:'',
+                    name:'',
+                }
+            }
+        },
+        methods: {
+            handleCurrentChange() {
+                this.selectProperty();
+            },
+            handleEdit(row){
+                window.location="/admin_property_edit.html?id="+row.id;
+            },
+            //根据ID查询多个属性
+            selectProperty: function () {
+                let query = window.location.search.substring(1);
+                let arr = query.split("=");
+                let cid=arr[arr.length-1];
+                this.property.cid=cid;
+                axios({
+                    method: "get",
+                    url: "/selectProperty",
+                    params: {
+                        pageNum: this.currentPage,
+                        pageSize: this.pageSize,
+                        categoryId:cid,
+                    }
+                }).then((response) => {
+                    if (response.data.code == 200) {
+                        this.properties = response.data.data.list;
+                        this.total = response.data.data.total;
+                    }
+                })
+            },
+            //增加属性
+            addProperty: function () {
+                axios({
+                    method: "post",
+                    url: "/addProperty",
+                    data: this.property,
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                }).then((response) => {
+                    if (response.data.code == 200) {
+                        this.selectProperty();
+                        this.property.name = '';
+                        alert("添加成功")
+                    }
+                })
+            },
+
+            //删除property
+            deleteProperty: function (row) {
+                axios({
+                    method: "post",
+                    url: "/deleteProperty",
+                    data: row.id,
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                }).then((response) => {
+                    if (response.data.code == 200) {
+                        this.selectProperty();
+                        alert("删除成功")
+                    }
+                })
+            },
+
+        },
+
+        beforecreated: function () {
+
+        },
+        created: function () {
+            this.selectProperty();
+        },
+        mounted: function () {
+        },
+        computed: {}
+    })
+</script>
+</html>

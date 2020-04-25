@@ -13,18 +13,6 @@ public class Review {
 
     private Date createDate;
 
-    public Review(Integer id, String content, Integer uid, Integer pid, Date createDate) {
-        this.id = id;
-        this.content = content;
-        this.uid = uid;
-        this.pid = pid;
-        this.createDate = createDate;
-    }
-
-    public Review() {
-        super();
-    }
-
     public Integer getId() {
         return id;
     }

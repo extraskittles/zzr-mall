@@ -29,26 +29,6 @@ public class Order {
 
     private String status;
 
-    public Order(Integer id, String orderCode, String address, String post, String receiver, String mobile, String userMessage, Date createDate, Date payDate, Date deliveryDate, Date confirmDate, Integer uid, String status) {
-        this.id = id;
-        this.orderCode = orderCode;
-        this.address = address;
-        this.post = post;
-        this.receiver = receiver;
-        this.mobile = mobile;
-        this.userMessage = userMessage;
-        this.createDate = createDate;
-        this.payDate = payDate;
-        this.deliveryDate = deliveryDate;
-        this.confirmDate = confirmDate;
-        this.uid = uid;
-        this.status = status;
-    }
-
-    public Order() {
-        super();
-    }
-
     public Integer getId() {
         return id;
     }

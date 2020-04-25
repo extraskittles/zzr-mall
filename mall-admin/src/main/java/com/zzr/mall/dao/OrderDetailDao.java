@@ -4,6 +4,8 @@ import com.zzr.mall.dto.OrderDetail;
 
 import java.util.List;
 
+
 public interface OrderDetailDao {
-    List<OrderDetail> selectDetail();
+    OrderDetail selectDetail(int orderId);
+    List<OrderDetail> selectDetails();
 }

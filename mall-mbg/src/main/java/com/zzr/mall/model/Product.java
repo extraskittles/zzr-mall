@@ -1,8 +1,10 @@
 package com.zzr.mall.model;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 public class Product {
+    @NotNull
     private Integer id;
 
     private String name;
@@ -18,21 +20,6 @@ public class Product {
     private Integer cid;
 
     private Date createDate;
-
-    public Product(Integer id, String name, String subTitle, Float originalPrice, Float promotePrice, Integer stock, Integer cid, Date createDate) {
-        this.id = id;
-        this.name = name;
-        this.subTitle = subTitle;
-        this.originalPrice = originalPrice;
-        this.promotePrice = promotePrice;
-        this.stock = stock;
-        this.cid = cid;
-        this.createDate = createDate;
-    }
-
-    public Product() {
-        super();
-    }
 
     public Integer getId() {
         return id;

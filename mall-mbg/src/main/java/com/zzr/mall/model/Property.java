@@ -1,21 +1,14 @@
 package com.zzr.mall.model;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
+
 public class Property {
     private Integer id;
 
     private Integer cid;
 
     private String name;
-
-    public Property(Integer id, Integer cid, String name) {
-        this.id = id;
-        this.cid = cid;
-        this.name = name;
-    }
-
-    public Property() {
-        super();
-    }
 
     public Integer getId() {
         return id;

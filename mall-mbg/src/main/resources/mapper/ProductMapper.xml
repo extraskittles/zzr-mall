@@ -2,16 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zzr.mall.mapper.ProductMapper">
   <resultMap id="BaseResultMap" type="com.zzr.mall.model.Product">
-    <constructor>
-      <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="name" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="sub_title" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="original_price" javaType="java.lang.Float" jdbcType="REAL" />
-      <arg column="promote_price" javaType="java.lang.Float" jdbcType="REAL" />
-      <arg column="stock" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="cid" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="create_date" javaType="java.util.Date" jdbcType="TIMESTAMP" />
-    </constructor>
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="sub_title" jdbcType="VARCHAR" property="subTitle" />
+    <result column="original_price" jdbcType="REAL" property="originalPrice" />
+    <result column="promote_price" jdbcType="REAL" property="promotePrice" />
+    <result column="stock" jdbcType="INTEGER" property="stock" />
+    <result column="cid" jdbcType="INTEGER" property="cid" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
   </resultMap>
   <sql id="Base_Column_List">
     id, name, sub_title, original_price, promote_price, stock, cid, create_date

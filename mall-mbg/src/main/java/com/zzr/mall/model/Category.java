@@ -1,21 +1,14 @@
 package com.zzr.mall.model;
 
+import javax.validation.constraints.NotNull;
+
 public class Category {
+    @NotNull
     private Integer id;
 
     private String name;
 
     private String pic;
-
-    public Category(Integer id, String name, String pic) {
-        this.id = id;
-        this.name = name;
-        this.pic = pic;
-    }
-
-    public Category() {
-        super();
-    }
 
     public Integer getId() {
         return id;

@@ -13,5 +13,7 @@ public interface CategoryMapper {
 
     int updateByPrimaryKeySelective(Category record);
 
+    int updateByPrimaryKeyWithBLOBs(Category record);
+
     int updateByPrimaryKey(Category record);
 }

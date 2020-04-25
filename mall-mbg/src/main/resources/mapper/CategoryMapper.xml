@@ -2,18 +2,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zzr.mall.mapper.CategoryMapper">
   <resultMap id="BaseResultMap" type="com.zzr.mall.model.Category">
-    <constructor>
-      <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="name" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="pic" javaType="java.lang.String" jdbcType="VARCHAR" />
-    </constructor>
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.zzr.mall.model.Category">
+    <result column="pic" jdbcType="LONGVARCHAR" property="pic" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, name, pic
+    id, name
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <sql id="Blob_Column_List">
+    pic
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
     select 
     <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
     from category
     where id = #{id,jdbcType=INTEGER}
   </select>
@@ -24,7 +29,7 @@
   <insert id="insert" parameterType="com.zzr.mall.model.Category">
     insert into category (id, name, pic
       )
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{pic,jdbcType=VARCHAR}
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{pic,jdbcType=LONGVARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.zzr.mall.model.Category">
@@ -48,7 +53,7 @@
         #{name,jdbcType=VARCHAR},
       </if>
       <if test="pic != null">
-        #{pic,jdbcType=VARCHAR},
+        #{pic,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
@@ -59,15 +64,20 @@
         name = #{name,jdbcType=VARCHAR},
       </if>
       <if test="pic != null">
-        pic = #{pic,jdbcType=VARCHAR},
+        pic = #{pic,jdbcType=LONGVARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.zzr.mall.model.Category">
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.zzr.mall.model.Category">
     update category
     set name = #{name,jdbcType=VARCHAR},
-      pic = #{pic,jdbcType=VARCHAR}
+      pic = #{pic,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zzr.mall.model.Category">
+    update category
+    set name = #{name,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -5,4 +5,7 @@
   <select id="selectAll" resultMap="com.zzr.mall.mapper.CategoryMapper.BaseResultMap">
     select * from category
   </select>
+  <select id="selectById" parameterType="java.lang.Integer" resultMap="com.zzr.mall.mapper.CategoryMapper.BaseResultMap">
+    select * from category where id=#{id}
+  </select>
 </mapper>

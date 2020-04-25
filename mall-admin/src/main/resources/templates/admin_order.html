@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width,height=device-height,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>订单管理</title>
+</head>
+<link type="text/css" rel="stylesheet" href="/css/admin_user.css">
+<body>
+<div id="app"></div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/axios/0.17.1/axios.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script type="text/x-template" id="template">
+    <div id="note">
+        <div id="head">
+        </div>
+        <div id="content">
+            <div id="table">
+                <el-table
+                        border
+                        :data="orders"
+                        style="width: 100%">
+                    <el-table-column
+                            prop="orderCode"
+                            label="订单号"
+                            width="180">
+                    </el-table-column>
+                    <el-table-column
+                            prop="status"
+                            label="状态"
+                            width="100">
+                    </el-table-column>
+                    <el-table-column
+                            prop="prices"
+                            label="金额"
+                            width="180">
+                    </el-table-column>
+                    <el-table-column
+                            prop="numbers"
+                            label="商品数量"
+                            width="100">
+                    </el-table-column>
+                    <el-table-column
+                            prop="user.name"
+                            label="买家名称"
+                            width="180">
+                    </el-table-column>
+                    <el-table-column
+                            prop="createDate"
+                            label="创建时间"
+                            width="180">
+                    </el-table-column>
+                    <el-table-column
+                            prop="payDate"
+                            label="支付时间"
+                            width="180">
+                    </el-table-column>
+                    <el-table-column
+                            prop="deliveryDate"
+                            label="发货时间"
+                            width="180">
+                    </el-table-column>
+                    <el-table-column
+                            prop="confirmDate"
+                            label="确认收货时间"
+                            width="180">
+                    </el-table-column>
+                    <el-table-column
+                            label="操作">
+                        <template slot-scope="scope">
+                            <el-button
+                                    size="mini"
+                                    @click="handleEdit(scope.$index, scope.row)">查看详情</el-button>
+                            <el-button
+                                    size="mini"
+                                    type="danger"
+                                    @click="handleDelete(scope.$index, scope.row)">发货</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </div>
+            <div id="page">
+                <el-pagination
+                        @current-change="handleCurrentChange"
+                        :current-page.sync="currentPage"
+                        :page-size.sync="pageSize"
+                        layout="total, prev, pager, next"
+                        :total.sync="total">
+                </el-pagination>
+            </div>
+        </div>
+    </div>
+</script>
+<script>
+    $(function () {
+        $("#head").load("head.html");
+    });
+</script>
+<script>
+    let app = new Vue({
+        el: '#app',
+        template: "#template",
+        data: function () {
+            return {
+                currentPage: 1,
+                pageSize: 5,
+                total: 1,
+                orders: [],
+            }
+        },
+        methods: {
+            handleCurrentChange() {
+                this.selectUsers();
+            },
+            selectUsers: function () {
+                axios({
+                    method: "get",
+                    url: "/getOrderDetails",
+                    params: {
+                        pageNum: this.currentPage,
+                        pageSize: this.pageSize,
+                    }
+                }).then((response) => {
+                    if (response.data.code == 200) {
+                        this.orders = response.data.data.list;
+                        this.total = response.data.data.total;
+                    }
+                })
+            }
+        },
+
+        beforecreated: function () {
+
+        },
+        created: function () {
+            this.selectUsers();
+        },
+        mounted: function () {
+        },
+        computed: {}
+    })
+</script>
+</html>

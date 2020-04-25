@@ -2,21 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zzr.mall.mapper.OrderMapper">
   <resultMap id="BaseResultMap" type="com.zzr.mall.model.Order">
-    <constructor>
-      <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="order_code" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="address" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="post" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="receiver" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="mobile" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="user_message" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="create_date" javaType="java.util.Date" jdbcType="TIMESTAMP" />
-      <arg column="pay_date" javaType="java.util.Date" jdbcType="TIMESTAMP" />
-      <arg column="delivery_date" javaType="java.util.Date" jdbcType="TIMESTAMP" />
-      <arg column="confirm_date" javaType="java.util.Date" jdbcType="TIMESTAMP" />
-      <arg column="uid" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="status" javaType="java.lang.String" jdbcType="VARCHAR" />
-    </constructor>
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="order_code" jdbcType="VARCHAR" property="orderCode" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="post" jdbcType="VARCHAR" property="post" />
+    <result column="receiver" jdbcType="VARCHAR" property="receiver" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="user_message" jdbcType="VARCHAR" property="userMessage" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="pay_date" jdbcType="TIMESTAMP" property="payDate" />
+    <result column="delivery_date" jdbcType="TIMESTAMP" property="deliveryDate" />
+    <result column="confirm_date" jdbcType="TIMESTAMP" property="confirmDate" />
+    <result column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
   </resultMap>
   <sql id="Base_Column_List">
     id, order_code, address, post, receiver, mobile, user_message, create_date, pay_date, 
@@ -25,15 +23,15 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from order
+    from order_
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from order
+    delete from order_
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.zzr.mall.model.Order">
-    insert into order (id, order_code, address, 
+    insert into order_ (id, order_code, address, 
       post, receiver, mobile, 
       user_message, create_date, pay_date, 
       delivery_date, confirm_date, uid, 
@@ -45,7 +43,7 @@
       #{status,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.zzr.mall.model.Order">
-    insert into order
+    insert into order_
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
@@ -130,7 +128,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.zzr.mall.model.Order">
-    update order
+    update order_
     <set>
       <if test="orderCode != null">
         order_code = #{orderCode,jdbcType=VARCHAR},
@@ -172,7 +170,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.zzr.mall.model.Order">
-    update order
+    update order_
     set order_code = #{orderCode,jdbcType=VARCHAR},
       address = #{address,jdbcType=VARCHAR},
       post = #{post,jdbcType=VARCHAR},

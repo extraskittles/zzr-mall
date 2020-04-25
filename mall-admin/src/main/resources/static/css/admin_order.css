@@ -1,0 +1,18 @@
+nav{
+    display: flex;
+    flex-direction: row;
+    height: 3rem;
+    background-color: black;
+    align-items: center;
+}
+.nav_brand{
+    color: #e8e2e2;
+    width: 5rem;
+    text-align: center;
+}
+a{
+    text-decoration-line: none;
+}
+#table{
+    margin: 2rem 0;
+}
