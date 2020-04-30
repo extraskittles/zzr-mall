@@ -6,7 +6,7 @@
           content="width=device-width,height=device-height,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>商品管理</title>
 </head>
-<link type="text/css" rel="stylesheet" href="/css/admin_category.css">
+<link type="text/css" rel="stylesheet" href="/css/admin_product.css">
 <body>
 <div id="app"></div>
 </body>
@@ -19,6 +19,13 @@
     <div id="note">
         <div id="head"></div>
         <div id="content">
+            <div class="breadCrumb">
+                <el-breadcrumb separator="/">
+                    <el-breadcrumb-item><a href="/admin_category.html">商品分类</a></el-breadcrumb-item>
+                    <el-breadcrumb-item><a href="javascript:location.reload()">{{category.name}}</a></el-breadcrumb-item>
+                    <el-breadcrumb-item>商品列表</el-breadcrumb-item>
+                </el-breadcrumb>
+            </div>
             <div id="table">
                 <el-table
                         border
@@ -139,6 +146,7 @@
                 cid:'',
                 products:[],
                 product:{},
+                category:{},
             }
         },
         methods: {
@@ -213,7 +221,20 @@
                     }
                 })
             },
-
+            //查询当前分类
+            selectCategory:function () {
+                axios({
+                    method: "get",
+                    url: "/selectCategory",
+                    params:{
+                       id:this.cid
+                   }
+                }).then((response) => {
+                    if (response.data.code == 200) {
+                       this.category=response.data.data;
+                    }
+                })
+            }
 
         },
 
@@ -226,6 +247,7 @@
             let cid=arr[arr.length-1];
             this.cid=cid;
             this.selectProducts();
+            this.selectCategory();
         },
         mounted: function () {
         },

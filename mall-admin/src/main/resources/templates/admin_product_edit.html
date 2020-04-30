@@ -6,7 +6,7 @@
           content="width=device-width,height=device-height,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>编辑商品</title>
 </head>
-<link type="text/css" rel="stylesheet" href="/css/admin_category.css">
+<link type="text/css" rel="stylesheet" href="/css/admin_product_edit.css">
 <body>
 <div id="app"></div>
 </body>
@@ -19,6 +19,14 @@
     <div id="note">
         <div id="head"></div>
         <div id="content">
+            <div class="breadCrumb">
+                <el-breadcrumb separator="/">
+                    <el-breadcrumb-item><a href="/admin_category.html">商品分类</a></el-breadcrumb-item>
+                    <el-breadcrumb-item><a :href="'/admin_product.html?cid='+category.id">{{category.name}}</a></el-breadcrumb-item>
+                    <el-breadcrumb-item>{{product.name}}</el-breadcrumb-item>
+                    <el-breadcrumb-item>编辑产品</el-breadcrumb-item>
+                </el-breadcrumb>
+            </div>
             <div class="form">
                 <div class="form-title">编辑产品</div>
                 <div class="inputs">
@@ -59,8 +67,9 @@
             template: "#template",
             data: function () {
                 return {
-                    id:'',
+                    id:'',//商品ID
                     product:{},
+                    category:{},
                 }
             },
             methods: {
@@ -88,8 +97,32 @@
                     }).then((response) => {
                         if (response.data.code == 200) {
                             this.product= response.data.data;
+                            //查询当前分类
+                            axios({
+                                method: "get",
+                                url: "/selectCategory",
+                                params:{
+                                    id:response.data.data.cid
+                                }
+                            }).then((response2) => {
+                                if (response2.data.code == 200) {
+                                    this.category=response2.data.data;
+                                }
+                            })
                         }
                     })
+                    //查询当前分类
+                    /*axios({
+                        method: "get",
+                        url: "/selectCategory",
+                        params:{
+                            id:cid
+                        }
+                    }).then((response) => {
+                        if (response.data.code == 200) {
+                            this.category=response.data.data;
+                        }
+                    })*/
                 },
                 updateProduct:function () {
                     axios({
@@ -115,7 +148,9 @@
     },
     mounted: function () {
     },
-    computed: {}
+    computed:{
+
+    }
     })
 </script>
 </html>

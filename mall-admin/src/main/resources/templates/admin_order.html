@@ -6,7 +6,7 @@
           content="width=device-width,height=device-height,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>订单管理</title>
 </head>
-<link type="text/css" rel="stylesheet" href="/css/admin_user.css">
+<link type="text/css" rel="stylesheet" href="/css/admin_order.css">
 <body>
 <div id="app"></div>
 </body>
@@ -19,12 +19,28 @@
     <div id="note">
         <div id="head">
         </div>
-        <div id="content">
+        <div class="content">
+            <div class="breadCrumb">
+                <el-breadcrumb separator="/">
+                    <el-breadcrumb-item>订单管理</el-breadcrumb-item>
+                </el-breadcrumb>
+            </div>
             <div id="table">
                 <el-table
                         border
                         :data="orders"
                         style="width: 100%">
+                    <el-table-column type="expand">
+                        <template slot-scope="props">
+                            <div v-for="(item,index) in props.row.orderItemDetails">
+                                <div>
+                                    <span>{{item.product.name}}</span>
+                                    <span>{{item.number}}个</span>
+                                    <span>单价：￥{{item.product.promotePrice}}</span>
+                                </div>
+                            </div>
+                        </template>
+                    </el-table-column>
                     <el-table-column
                             prop="orderCode"
                             label="订单号"
@@ -71,15 +87,12 @@
                             width="180">
                     </el-table-column>
                     <el-table-column
-                            label="操作">
+                            label="发货">
                         <template slot-scope="scope">
-                            <el-button
-                                    size="mini"
-                                    @click="handleEdit(scope.$index, scope.row)">查看详情</el-button>
-                            <el-button
+                            <el-button v-if="scope.row.deliveryDate==null"
                                     size="mini"
                                     type="danger"
-                                    @click="handleDelete(scope.$index, scope.row)">发货</el-button>
+                                    @click="sendProduct(scope.row)">发货</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -115,9 +128,25 @@
         },
         methods: {
             handleCurrentChange() {
-                this.selectUsers();
+                this.selectOrders();
             },
-            selectUsers: function () {
+            //发货
+            sendProduct:function(row){
+                axios({
+                    method: "post",
+                    url: "/sendProduct",
+                    data:row.id,
+                    headers:{
+                        "Content-Type":"application/json"
+                    }
+                }).then((response) => {
+                    if (response.data.code == 200) {
+                        alert("发货成功")
+                        this.selectOrders();
+                    }
+                })
+            },
+            selectOrders: function () {
                 axios({
                     method: "get",
                     url: "/getOrderDetails",
@@ -138,7 +167,7 @@
 
         },
         created: function () {
-            this.selectUsers();
+            this.selectOrders();
         },
         mounted: function () {
         },

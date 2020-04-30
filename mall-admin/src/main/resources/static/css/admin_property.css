@@ -1,3 +1,14 @@
+#content{
+    margin: 3rem 0;
+}
+#page{
+    margin: 2rem 0;
+}
+
+#table{
+    margin: 3rem;
+}
+
 /*表单*/
 .form {
     width: 20rem;
@@ -59,3 +70,6 @@
     border: 1px solid transparent;
     border-radius: 4px;
 }
+
+
+

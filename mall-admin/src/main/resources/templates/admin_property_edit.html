@@ -6,7 +6,7 @@
           content="width=device-width,height=device-height,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>编辑属性</title>
 </head>
-<link type="text/css" rel="stylesheet" href="/css/admin_category_edit.css">
+<link type="text/css" rel="stylesheet" href="/css/admin_property_edit.css">
 <body>
 <div id="app"></div>
 </body>
@@ -19,17 +19,27 @@
     <div id="note">
         <div id="head">
         </div>
-        <div class="form">
-            <div class="form-title">编辑属性</div>
-            <div class="inputs">
-                <div>
-                    <span>分类名称</span>
-                    <input type="text" v-model="property.name" >
-                </div>
-
+        <div class="content">
+            <div class="breadCrumb">
+                <el-breadcrumb separator="/">
+                    <el-breadcrumb-item><a href="/admin_category.html">商品分类</a></el-breadcrumb-item>
+                    <el-breadcrumb-item><a :href="'/admin_product.html?cid='+category.id">{{category.name}}</a></el-breadcrumb-item>
+                    <el-breadcrumb-item>编辑属性</el-breadcrumb-item>
+                </el-breadcrumb>
             </div>
-            <button id="submit" class="submit" v-on:click="updateProperty">提交</button>
+            <div class="form">
+                <div class="form-title">编辑属性</div>
+                <div class="inputs">
+                    <div>
+                        <span>分类名称</span>
+                        <input type="text" v-model="property.name" >
+                    </div>
+
+                </div>
+                <button id="submit" class="submit" v-on:click="updateProperty">提交</button>
+            </div>
         </div>
+
     </div>
 </script>
 <script>
@@ -48,6 +58,7 @@
                     id:'',
                     cid:'',
                 },
+                category:{},
             }
         },
         methods: {
@@ -74,6 +85,7 @@
             let arr = query.split("=");
             let id=arr[arr.length-1];
             this.id=id;
+            //获取一个商品属性
             axios({
                 method:"get",
                 url:"/selectOne",
@@ -83,8 +95,21 @@
             }).then((response)=>{
                 if(response.data.code==200){
                     this.property=response.data.data;
+                    //查询当前分类
+                    axios({
+                        method: "get",
+                        url: "/selectCategory",
+                        params:{
+                            id:response.data.data.cid
+                        }
+                    }).then((response2) => {
+                        if (response2.data.code == 200) {
+                            this.category=response2.data.data;
+                        }
+                    })
                 }
             })
+
         },
         mounted: function () {
         },

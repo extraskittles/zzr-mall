@@ -4,12 +4,17 @@ nav{
     height: 3rem;
     background-color: black;
     align-items: center;
+    height: 3.5rem;
 }
 .nav_brand{
     color: #e8e2e2;
     width: 5rem;
     text-align: center;
+    margin: 0 1rem;
 }
 a{
     text-decoration-line: none;
+}
+.logo{
+    height: 3rem;
 }

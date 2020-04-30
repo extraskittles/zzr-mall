@@ -24,11 +24,14 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderDetail selectOrderDetail(int orderId) {
         OrderDetail orderDetail = orderDetailDao.selectDetail(orderId);
+        if(orderDetail==null){
+            return null;
+        }
         List<OrderItemDetail> orderItemDetails = orderDetail.getOrderItemDetails();
         float prices=0;
         int numbers=0;
         for(OrderItemDetail orderItemDetail:orderItemDetails){
-            prices+=orderItemDetail.getProduct().getPromotePrice();
+            prices+=orderItemDetail.getProduct().getPromotePrice()*orderItemDetail.getNumber();
             numbers+=orderItemDetail.getNumber();
         }
         orderDetail.setPrices(prices);

@@ -1,4 +1,4 @@
-nav{
+/*nav{
     display: flex;
     flex-direction: row;
     height: 3rem;
@@ -12,7 +12,10 @@ nav{
 }
 a{
     text-decoration-line: none;
-}
+}*/
 #table{
     margin: 2rem 0;
+}
+.content{
+    margin: 3rem 0;
 }

@@ -6,7 +6,7 @@
 }
 
 #table{
-    margin: 2rem 0;
+    margin-bottom: 3rem;
 }
 
 /*表单*/
@@ -70,6 +70,3 @@
     border: 1px solid transparent;
     border-radius: 4px;
 }
-
-
-
